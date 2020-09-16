@@ -533,22 +533,19 @@ func (p *Patcher) patchIdent(id *ast.Ident, obj types.Object) {
 				v.Tag = &ast.BasicLit{}
 			}
 
-			if jsonTag, exist := reflect.StructTag(tags).Lookup("json"); exist {
-				newTags := strings.Split(strings.TrimSpace(tags), " ")
-				for i, tag := range newTags {
-					if strings.HasPrefix(tag, `json:`) {
-						newTags = append(newTags[:i], newTags[i+1:]...)
-						break
-					}
+			//tag override
+			oldTags := strings.Split(strings.TrimSpace(strings.Trim(v.Tag.Value, "` ")), " ")
+			var newTags []string
+			for _, tag := range oldTags {
+				var key string
+				if kv := strings.Split(tag, ":"); len(kv) > 0 {
+					key = kv[0]
 				}
-				tags = strings.Join(newTags, " ")
-
-				odlTags := strings.Split(strings.TrimSpace(strings.Trim(v.Tag.Value, "` ")), " ")
-				tag := strings.Join(append(odlTags[:len(odlTags)-1], `json:"`+jsonTag+`"`), " ")
-				v.Tag.Value = "`" + tag + "`"
+				if value, exist := reflect.StructTag(tags).Lookup(key); !exist || value == "" {
+					newTags = append(newTags, tag)
+				}
 			}
-
-			v.Tag.Value = "`" + strings.TrimSpace(strings.Trim(v.Tag.Value, "` ")+" "+tags) + "`"
+			v.Tag.Value = "`" + strings.Join(append(newTags, tags), " ") + "`"
 			log.Printf("Add tags:\t%q.%s %s", obj.Pkg().Path(), id.Name, v.Tag.Value)
 		}
 	}
