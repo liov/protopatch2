@@ -8,7 +8,7 @@ package message
 
 import (
 	proto "github.com/golang/protobuf/proto"
-	_ "github.com/liov/protopatch/patch/gopb"
+	_ "github.com/liov/protopatch2/patch/gopb"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"

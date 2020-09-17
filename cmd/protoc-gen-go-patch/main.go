@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/liov/protopatch/patch"
+	"github.com/liov/protopatch2/patch"
 
 	"google.golang.org/protobuf/compiler/protogen"
 )

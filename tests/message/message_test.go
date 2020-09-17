@@ -3,7 +3,7 @@ package message
 import (
 	"testing"
 
-	"github.com/liov/protopatch/tests"
+	"github.com/liov/protopatch2/tests"
 )
 
 func TestBasicMessage(t *testing.T) {

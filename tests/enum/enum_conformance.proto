@@ -4,7 +4,7 @@ syntax = "proto3";
 package tests.enum;
 // clang-format on
 
-option go_package = "github.com/liov/protopatch/tests/enum";
+option go_package = "github.com/liov/protopatch2/tests/enum";
 
 enum BasicEnum {
 	BASIC_INVALID = 0;

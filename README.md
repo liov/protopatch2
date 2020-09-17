@@ -45,7 +45,7 @@ message ToDo {
 
 ## Install
 
-`go install github.com/liov/protopatch/cmd/protoc-gen-go-patch`
+`go install github.com/liov/protopatch2/cmd/protoc-gen-go-patch`
 
 ## Usage
 
@@ -54,7 +54,7 @@ After installing `protoc-gen-go-patch`, use it by specifying it with a `--go-pat
 ```shell
 protoc \
 	-I . \
-	-I `go list -m -f {{.Dir}} github.com/liov/protopatch` \
+	-I `go list -m -f {{.Dir}} github.com/liov/protopatch2` \
 	-I `go list -m -f {{.Dir}} google.golang.org/protobuf` \
 	--go-patch_out=plugin=go,paths=source_relative:. \
 	--go-patch_out=plugin=go-grpc,paths=source_relative:. \

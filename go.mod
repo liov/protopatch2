@@ -1,4 +1,4 @@
-module github.com/liov/protopatch
+module github.com/liov/protopatch2
 
 go 1.14
 
