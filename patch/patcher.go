@@ -108,17 +108,21 @@ func (p *Patcher) scanEnum(e *protogen.Enum) {
 	if stringerName != "" {
 		p.RenameMethod(ident.WithChild(e.GoIdent, "String"), stringerName)
 	}
-
+	noPrefix := opts.GetNoPrefix()
 	p.enumRenames[e.GoIdent] = make(map[string]string)
 	for _, v := range e.Values {
-		p.scanEnumValue(v)
+		p.scanEnumValue(v, noPrefix)
 	}
 }
 
-func (p *Patcher) scanEnumValue(v *protogen.EnumValue) {
+func (p *Patcher) scanEnumValue(v *protogen.EnumValue, noPrefix bool) {
 	e := v.Parent
 	opts := valueOptions(v)
 	newName := opts.GetName()
+	if noPrefix {
+		newName = replacePrefix(v.GoIdent.GoName, e.GoIdent.GoName, "")
+	}
+
 	if newName == "" && p.isRenamed(e.GoIdent) {
 		newName = replacePrefix(v.GoIdent.GoName, e.GoIdent.GoName, p.nameFor(e.GoIdent))
 	}
