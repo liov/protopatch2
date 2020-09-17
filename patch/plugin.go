@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"reflect"
 	"strings"
 
 	"google.golang.org/protobuf/proto"
@@ -76,4 +77,20 @@ func Write(res *pluginpb.CodeGeneratorResponse, w io.Writer) error {
 	}
 	_, err = w.Write(out)
 	return err
+}
+
+// Override tags
+func mergeTags(oldTag, newTag string) string {
+	oldTags := strings.Split(strings.TrimSpace(strings.Trim(oldTag, "` ")), " ")
+	var newTags []string
+	for _, tag := range oldTags {
+		var key string
+		if kv := strings.Split(tag, ":"); len(kv) > 0 {
+			key = kv[0]
+		}
+		if value, exist := reflect.StructTag(newTag).Lookup(key); !exist || value == "" {
+			newTags = append(newTags, tag)
+		}
+	}
+	return strings.Join(append(newTags, newTag), " ")
 }
