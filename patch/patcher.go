@@ -10,6 +10,7 @@ import (
 	"go/types"
 	"log"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"strings"
 
@@ -156,7 +157,7 @@ func (p *Patcher) scanMessage(m *protogen.Message, parent *protogen.Message) {
 }
 
 func replacePrefix(s, prefix, with string) string {
-	return with + strings.TrimPrefix(s, prefix)
+	return with + strings.TrimPrefix(s, prefix)[1:]
 }
 
 func (p *Patcher) scanOneof(o *protogen.Oneof) {
@@ -574,6 +575,22 @@ func (p *Patcher) patchIdent(id *ast.Ident, obj types.Object) {
 			log.Printf("Add tags:\t%q.%s %s", obj.Pkg().Path(), id.Name, v.Tag.Value)
 		}
 	}
+}
+
+// Override tags
+func mergeTags(oldTag, newTag string) string {
+	oldTags := strings.Split(strings.TrimSpace(strings.Trim(oldTag, "` ")), " ")
+	var newTags []string
+	for _, tag := range oldTags {
+		var key string
+		if kv := strings.Split(tag, ":"); len(kv) > 0 {
+			key = kv[0]
+		}
+		if value, exist := reflect.StructTag(newTag).Lookup(key); !exist || value == "" {
+			newTags = append(newTags, tag)
+		}
+	}
+	return strings.Join(append(newTags, newTag), " ")
 }
 
 func (p *Patcher) patchComments(id *ast.Ident, repl string) {
