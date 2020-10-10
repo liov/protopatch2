@@ -28,10 +28,6 @@ message Options {
 	// The stringer_name option renames a generated String() method (if any)
 	// so a custom String() method can be implemented in its place.
 	optional string stringer_name = 30; // TODO: implement for messages
-
-	optional string cn = 40;
-
-	optional bool	no_prefix =50;
 }
 
 extend google.protobuf.MessageOptions {

@@ -3,7 +3,7 @@ package message
 import (
 	"testing"
 
-	"github.com/liov/protopatch2/tests"
+	"github.com/liov/protopatch/tests"
 )
 
 func TestBasicMessage(t *testing.T) {
@@ -62,22 +62,4 @@ func TestMessageWithStructTags(t *testing.T) {
 func TestNestedMessageWithStructTags(t *testing.T) {
 	m := &OuterMessageWithTags_InnerMessage{}
 	tests.ValidateTag(t, m, "Value", "test", "value")
-}
-
-func TestMessageWithOverrideTag(t *testing.T) {
-	m := &MessageWithOverrideTag{}
-	tests.ValidateTag(t, m, "Value1", "json", "value1")
-	tests.ValidateTag(t, m, "Value2", "json", "-")
-	tests.ValidateTag(t, m, "Value3", "json", "value")
-	tests.ValidateTag(t, m, "Protobuf", "json", "protobuf,omitempty")
-	tests.ValidateTag(t, m, "Protobuf", "protobuf", "bytes,4,opt,name=proto,proto3")
-}
-
-func TestNestedMessageWithOverrideTag(t *testing.T) {
-	m := &OuterMessageOverrideTag_InnerMessage{}
-	tests.ValidateTag(t, m, "Value1", "json", "value1")
-	tests.ValidateTag(t, m, "Value2", "json", "-")
-	tests.ValidateTag(t, m, "Value3", "json", "value")
-	tests.ValidateTag(t, m, "Protobuf", "json", "protobuf,omitempty")
-	tests.ValidateTag(t, m, "Protobuf", "protobuf", "bytes,4,opt,name=proto,proto3")
 }
